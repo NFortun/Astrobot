@@ -15,7 +15,7 @@ type Config struct {
 
 var Data Config
 
-func init() {
+func LoadConfig() {
 	file, err := os.Open("config.json")
 	if err != nil {
 		panic(err)

@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"astrobot/astrobin"
-	"astrobot/models"
-	api "astrobot/restapi/operations"
 	"net/http"
+
+	"github.com/NFortun/Astrobot/astrobin"
+	"github.com/NFortun/Astrobot/models"
+	api "github.com/NFortun/Astrobot/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/sirupsen/logrus"
@@ -55,7 +56,8 @@ func GetImages(params api.GetImagesParams) middleware.Responder {
 	}
 
 	logrus.Infof("getting images with %d parameters", len(opts))
-	images, err := astrobin.GetImages(opts)
+	client := astrobin.NewClient(http.DefaultClient)
+	images, err := client.GetImages(opts)
 	if err != nil {
 		errMessage := err.Error()
 		return api.NewGetImageOfTheDayDefault(http.StatusInternalServerError).WithPayload(&models.Error{Message: &errMessage})

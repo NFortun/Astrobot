@@ -1,23 +1,24 @@
 package astrobin
 
 import (
-	"astrobot/config"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 
+	"github.com/NFortun/Astrobot/config"
+
 	"github.com/sirupsen/logrus"
 )
 
-func GetImageOfTheDay() (*ImageOfTheDay, error) {
+func (a *astrobin) GetImageOfTheDay() (*ImageOfTheDay, error) {
 	request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/api/v1/imageoftheday/?limit=1&api_key=%s&api_secret=%s&format=json", config.Data.BasePath, config.Data.ApiKey, config.Data.ApiSecret), nil)
 	if err != nil {
 		return nil, err
 	}
 
 	logrus.Info("sending request")
-	response, err := http.DefaultClient.Do(request)
+	response, err := a.Client.Do(request)
 	if err != nil {
 		return nil, err
 	}
