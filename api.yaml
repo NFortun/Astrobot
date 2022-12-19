@@ -1,0 +1,79 @@
+swagger: "2.0"
+info:
+  title: Astrobot
+  version: 0.0.1
+
+definitions:
+  Error:
+    type: object
+    properties:
+      message:
+        type: string
+    required:
+      - message
+  ImageResponse:
+    type: object
+    properties:
+      description:
+        type: string
+      title:
+        type: string
+      url:
+        type: string
+      user:
+        type: string
+    required:
+      - description
+      - title
+      - url
+      - user
+  ImagesResponse:
+    type: array
+    items:
+      $ref: "#/definitions/ImageResponse"
+
+paths:
+  /imageoftheday:
+    get:
+      operationId: GetImageOfTheDay
+      summary: "Get the astrobin image of the day"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ImageResponse"
+        default:
+          description: "default error message"
+          schema:
+            $ref: "#/definitions/Error"
+  /images:
+    get:
+      operationId: GetImages
+      summary: Get images
+      parameters:
+        - name: user
+          in: query
+          type: string
+        - name: offset
+          in: query
+          type: integer
+        - name: limit
+          in: query
+          type: integer
+        - name: start_date
+          in: query
+          type: string
+          format: date-time
+        - name: end_date
+          in: query
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ImagesResponse"
+        default:
+          description: "default error message"
+          schema:
+            $ref: "#/definitions/Error"
