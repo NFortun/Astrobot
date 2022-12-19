@@ -8,12 +8,12 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/runtime/middleware"
 
-	"astrobot/handler"
-	"astrobot/restapi/operations"
+	"github.com/NFortun/Astrobot/restapi/operations"
 )
 
-//go:generate swagger generate server --target ..\..\astrobot --name Astrobot --spec ..\api.yaml --principal interface{}
+//go:generate swagger generate server --target ..\..\Astrobot-Server --name Astrobot --spec ..\api.yaml --principal interface{} --exclude-main
 
 func configureFlags(api *operations.AstrobotAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
@@ -37,9 +37,16 @@ func configureAPI(api *operations.AstrobotAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	api.GetImageOfTheDayHandler = operations.GetImageOfTheDayHandlerFunc(handler.GetImageOfTheDay)
-
-	api.GetImagesHandler = operations.GetImagesHandlerFunc(handler.GetImages)
+	if api.GetImageOfTheDayHandler == nil {
+		api.GetImageOfTheDayHandler = operations.GetImageOfTheDayHandlerFunc(func(params operations.GetImageOfTheDayParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetImageOfTheDay has not yet been implemented")
+		})
+	}
+	if api.GetImagesHandler == nil {
+		api.GetImagesHandler = operations.GetImagesHandlerFunc(func(params operations.GetImagesParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetImages has not yet been implemented")
+		})
+	}
 
 	api.PreServerShutdown = func() {}
 

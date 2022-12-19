@@ -1,21 +1,22 @@
 package astrobin
 
 import (
-	"astrobot/config"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"strings"
+
+	"github.com/NFortun/Astrobot/config"
 )
 
-func GetImageInformation(path string) (ImageInformations, error) {
+func (a *astrobin) GetImageInformations(path string) (ImageInformations, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s?api_key=%s&api_secret=%s&format=json", config.Data.BasePath, path, config.Data.ApiKey, config.Data.ApiSecret), nil)
 	if err != nil {
 		return ImageInformations{}, err
 	}
 
-	response, err := http.DefaultClient.Do(req)
+	response, err := a.Client.Do(req)
 	if err != nil {
 		return ImageInformations{}, err
 	}

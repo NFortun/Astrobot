@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"astrobot/models"
+	"github.com/NFortun/Astrobot/models"
 )
 
 // GetImageOfTheDayOKCode is the HTTP code returned for type GetImageOfTheDayOK
