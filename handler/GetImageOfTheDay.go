@@ -4,11 +4,11 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/sirupsen/logrus"
 
-	"astrobot/astrobin"
-	"astrobot/models"
-	api "astrobot/restapi/operations"
+	"github.com/NFortun/Astrobot/astrobin"
+	"github.com/NFortun/Astrobot/helper"
+	"github.com/NFortun/Astrobot/models"
+	api "github.com/NFortun/Astrobot/restapi/operations"
 )
 
 type Url struct {
@@ -16,20 +16,12 @@ type Url struct {
 }
 
 func GetImageOfTheDay(params api.GetImageOfTheDayParams) middleware.Responder {
-	logrus.Info("getting image of the day")
-	image, err := astrobin.GetImageOfTheDay()
+	imageInformations, err := helper.GetImageOfTheDay(astrobin.NewClient(http.DefaultClient))
 	if err != nil {
 		errMessage := err.Error()
-		logrus.Warnf("failed to retrive IOTD informations: %s", errMessage)
-		return api.NewGetImageOfTheDayDefault(http.StatusInternalServerError).WithPayload(&models.Error{Message: &errMessage})
-	}
-
-	logrus.Infof("image url %s", image.Path)
-	imageInformations, err := astrobin.GetImageInformation(image.Path)
-	if err != nil {
-		errMessage := err.Error()
-		logrus.Warn("failed to retrieve image informations")
-		return api.NewGetImageOfTheDayDefault(http.StatusInternalServerError).WithPayload(&models.Error{Message: &errMessage})
+		return api.NewGetImagesDefault(http.StatusInternalServerError).WithPayload(&models.Error{
+			Message: &errMessage,
+		})
 	}
 
 	return api.NewGetImageOfTheDayOK().WithPayload(
