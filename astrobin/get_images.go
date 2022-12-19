@@ -1,17 +1,17 @@
 package astrobin
 
 import (
-	"astrobot/config"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"strings"
 
+	"github.com/NFortun/Astrobot/config"
 	"github.com/sirupsen/logrus"
 )
 
-func GetImages(opts []*QueryOpts) (*ImagesInformations, error) {
+func (a *astrobin) GetImages(opts []*QueryOpts) (*ImagesInformations, error) {
 	var stringOpts []string
 	for _, opt := range opts {
 		stringOpts = append(stringOpts, opt.String())
@@ -39,7 +39,7 @@ func GetImages(opts []*QueryOpts) (*ImagesInformations, error) {
 
 	logrus.Info(completePath)
 
-	response, err := http.DefaultClient.Do(req)
+	response, err := a.Client.Do(req)
 	if err != nil {
 		return nil, err
 	}
