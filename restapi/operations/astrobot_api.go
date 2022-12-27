@@ -48,6 +48,9 @@ func NewAstrobotAPI(spec *loads.Document) *AstrobotAPI {
 		GetImagesHandler: GetImagesHandlerFunc(func(params GetImagesParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetImages has not yet been implemented")
 		}),
+		GetUsersHandler: GetUsersHandlerFunc(func(params GetUsersParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetUsers has not yet been implemented")
+		}),
 	}
 }
 
@@ -88,6 +91,8 @@ type AstrobotAPI struct {
 	GetImageOfTheDayHandler GetImageOfTheDayHandler
 	// GetImagesHandler sets the operation handler for the get images operation
 	GetImagesHandler GetImagesHandler
+	// GetUsersHandler sets the operation handler for the get users operation
+	GetUsersHandler GetUsersHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -170,6 +175,9 @@ func (o *AstrobotAPI) Validate() error {
 	}
 	if o.GetImagesHandler == nil {
 		unregistered = append(unregistered, "GetImagesHandler")
+	}
+	if o.GetUsersHandler == nil {
+		unregistered = append(unregistered, "GetUsersHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -267,6 +275,10 @@ func (o *AstrobotAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/images"] = NewGetImages(o.context, o.GetImagesHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/users"] = NewGetUsers(o.context, o.GetUsersHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

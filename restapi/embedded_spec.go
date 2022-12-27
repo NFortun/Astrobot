@@ -92,6 +92,26 @@ func init() {
           }
         }
       }
+    },
+    "/users": {
+      "get": {
+        "summary": "Get users",
+        "operationId": "GetUsers",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UsersResponse"
+            }
+          },
+          "default": {
+            "description": "default error message",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -133,6 +153,12 @@ func init() {
       "type": "array",
       "items": {
         "$ref": "#/definitions/ImageResponse"
+      }
+    },
+    "UsersResponse": {
+      "type": "array",
+      "items": {
+        "type": "string"
       }
     }
   }
@@ -212,6 +238,26 @@ func init() {
           }
         }
       }
+    },
+    "/users": {
+      "get": {
+        "summary": "Get users",
+        "operationId": "GetUsers",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/UsersResponse"
+            }
+          },
+          "default": {
+            "description": "default error message",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -253,6 +299,12 @@ func init() {
       "type": "array",
       "items": {
         "$ref": "#/definitions/ImageResponse"
+      }
+    },
+    "UsersResponse": {
+      "type": "array",
+      "items": {
+        "type": "string"
       }
     }
   }

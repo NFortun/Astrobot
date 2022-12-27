@@ -31,7 +31,10 @@ definitions:
     type: array
     items:
       $ref: "#/definitions/ImageResponse"
-
+  UsersResponse:
+    type: array
+    items:
+      type: string
 paths:
   /imageoftheday:
     get:
@@ -73,6 +76,19 @@ paths:
           description: "Success"
           schema:
             $ref: "#/definitions/ImagesResponse"
+        default:
+          description: "default error message"
+          schema:
+            $ref: "#/definitions/Error"
+  /users:
+    get:
+      operationId: GetUsers
+      summary: Get users
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/UsersResponse"
         default:
           description: "default error message"
           schema:

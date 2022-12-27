@@ -39,6 +39,7 @@ func configureAPI(api *operations.AstrobotAPI) http.Handler {
 
 	api.GetImageOfTheDayHandler = operations.GetImageOfTheDayHandlerFunc(handler.GetImageOfTheDay)
 	api.GetImagesHandler = operations.GetImagesHandlerFunc(handler.GetImages)
+	api.GetUsersHandler = operations.GetUsersHandlerFunc(handler.GetUsers)
 
 	api.PreServerShutdown = func() {}
 

@@ -9,16 +9,21 @@ import (
 	"github.com/jessevdk/go-flags"
 
 	config "github.com/NFortun/Astrobot/config"
+	"github.com/NFortun/Astrobot/db"
 	restapi "github.com/NFortun/Astrobot/restapi"
 	"github.com/NFortun/Astrobot/restapi/operations"
 )
 
 var port = flag.Int("port", 3000, "default server port")
 
+func init() {
+	config.LoadConfig()
+	db.Connect()
+}
+
 func main() {
 
 	flag.Parse()
-	config.LoadConfig()
 
 	swaggerSpec, err := loads.Embedded(restapi.SwaggerJSON, restapi.FlatSwaggerJSON)
 	if err != nil {
