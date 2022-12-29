@@ -20,7 +20,7 @@ func GetImageOfTheDay(params api.GetImageOfTheDayParams) middleware.Responder {
 	image, err := astrobin.GetImageOfTheDay()
 	if err != nil {
 		errMessage := err.Error()
-		logrus.Warn("failed to retrive IOTD informations: %s", errMessage)
+		logrus.Warnf("failed to retrive IOTD informations: %s", errMessage)
 		return api.NewGetImageOfTheDayDefault(http.StatusInternalServerError).WithPayload(&models.Error{Message: &errMessage})
 	}
 
