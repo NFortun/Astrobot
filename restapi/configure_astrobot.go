@@ -8,8 +8,8 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/runtime/middleware"
 
+	"github.com/NFortun/Astrobot/handler"
 	"github.com/NFortun/Astrobot/restapi/operations"
 )
 
@@ -37,16 +37,8 @@ func configureAPI(api *operations.AstrobotAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	if api.GetImageOfTheDayHandler == nil {
-		api.GetImageOfTheDayHandler = operations.GetImageOfTheDayHandlerFunc(func(params operations.GetImageOfTheDayParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.GetImageOfTheDay has not yet been implemented")
-		})
-	}
-	if api.GetImagesHandler == nil {
-		api.GetImagesHandler = operations.GetImagesHandlerFunc(func(params operations.GetImagesParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.GetImages has not yet been implemented")
-		})
-	}
+	api.GetImageOfTheDayHandler = operations.GetImageOfTheDayHandlerFunc(handler.GetImageOfTheDay)
+	api.GetImagesHandler = operations.GetImagesHandlerFunc(handler.GetImages)
 
 	api.PreServerShutdown = func() {}
 
