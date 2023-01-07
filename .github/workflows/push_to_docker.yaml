@@ -32,7 +32,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/astrobot-server:SNAPSHOT-${{ steps.vars.outputs.sha_short }}
-        if: github.ref_type == "branch"
+        if: ${{github.ref_type}} == "branch"
 
       
       - name: Build and push
@@ -42,4 +42,4 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/astrobot-server:${{ github.ref_name }}
-        if: github.ref_type == "tag"
+        if: ${{github.ref_type}} == "tag"
