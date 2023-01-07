@@ -1,8 +1,5 @@
 name: Push to DockerHub
 on:
-  pull_request:
-    branches:
-      - develop
   push:
     branches:
       - develop
