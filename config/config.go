@@ -16,7 +16,7 @@ type Config struct {
 var Data Config
 
 func LoadConfig() {
-	file, err := os.Open("config.json")
+	file, err := os.Open(os.Getenv("CONFIG_PATH"))
 	if err != nil {
 		panic(err)
 	}
