@@ -1,9 +1,10 @@
-package config
+package astrobin
 
 import (
 	"encoding/json"
 	"io"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -40,5 +41,11 @@ func LoadConfig() {
 	}
 	if Data.BasePath == "" {
 		log.Fatal("missing Base Path")
+	}
+}
+
+func NewClient(client *http.Client) AstrobinClient {
+	return &astrobin{
+		Client: client,
 	}
 }

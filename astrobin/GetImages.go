@@ -1,14 +1,15 @@
-package handler
+package astrobin
 
 import (
 	"net/http"
 
-	"github.com/NFortun/Astrobot/astrobin"
-	"github.com/NFortun/Astrobot/models"
-	api "github.com/NFortun/Astrobot/restapi/operations"
-
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/sirupsen/logrus"
+
+	"github.com/NFortun/Astrobot/internal/astrobin"
+	"github.com/NFortun/Astrobot/models"
+
+	api "github.com/NFortun/Astrobot/restapi/operations"
 )
 
 func GetImages(params api.GetImagesParams) middleware.Responder {
@@ -57,10 +58,20 @@ func GetImages(params api.GetImagesParams) middleware.Responder {
 
 	logrus.Infof("getting images with %d parameters", len(opts))
 	client := astrobin.NewClient(http.DefaultClient)
-	images, err := client.GetImages(opts)
+	images, err := getImages(client, opts)
 	if err != nil {
 		errMessage := err.Error()
 		return api.NewGetImageOfTheDayDefault(http.StatusInternalServerError).WithPayload(&models.Error{Message: &errMessage})
+	}
+
+	return api.NewGetImagesOK().WithPayload(images)
+}
+
+// getImages
+func getImages(client astrobin.AstrobinClient, opts []*astrobin.QueryOpts) (models.ImagesResponse, error) {
+	images, err := client.GetImages(opts)
+	if err != nil {
+		return nil, err
 	}
 
 	imagesResponse := models.ImagesResponse{}
@@ -71,9 +82,7 @@ func GetImages(params api.GetImagesParams) middleware.Responder {
 			URL:         &images.Images[i].Url,
 			User:        &images.Images[i].User,
 		})
-
 	}
 
-	return api.NewGetImagesOK().WithPayload(imagesResponse)
-
+	return imagesResponse, nil
 }
