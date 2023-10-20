@@ -6,12 +6,10 @@ import (
 	"io"
 	"net/http"
 	"strings"
-
-	"github.com/NFortun/Astrobot/config"
 )
 
 func (a *astrobin) GetImageInformations(path string) (ImageInformations, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s?api_key=%s&api_secret=%s&format=json", config.Data.BasePath, path, config.Data.ApiKey, config.Data.ApiSecret), nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s?api_key=%s&api_secret=%s&format=json", Data.BasePath, path, Data.ApiKey, Data.ApiSecret), nil)
 	if err != nil {
 		return ImageInformations{}, err
 	}

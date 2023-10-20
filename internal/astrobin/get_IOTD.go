@@ -6,13 +6,11 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/NFortun/Astrobot/config"
-
 	"github.com/sirupsen/logrus"
 )
 
 func (a *astrobin) GetImageOfTheDay() (*ImageOfTheDay, error) {
-	request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/api/v1/imageoftheday/?limit=1&api_key=%s&api_secret=%s&format=json", config.Data.BasePath, config.Data.ApiKey, config.Data.ApiSecret), nil)
+	request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/api/v1/imageoftheday/?limit=1&api_key=%s&api_secret=%s&format=json", Data.BasePath, Data.ApiKey, Data.ApiSecret), nil)
 	if err != nil {
 		return nil, err
 	}

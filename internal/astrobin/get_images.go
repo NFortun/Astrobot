@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/NFortun/Astrobot/config"
 	"github.com/sirupsen/logrus"
 )
 
@@ -23,9 +22,9 @@ func (a *astrobin) GetImages(opts []*QueryOpts) (*ImagesInformations, error) {
 	}
 
 	completePath := fmt.Sprintf("%s/api/v1/image/?api_key=%s&api_secret=%s&format=json%s",
-		config.Data.BasePath,
-		config.Data.ApiKey,
-		config.Data.ApiSecret,
+		Data.BasePath,
+		Data.ApiKey,
+		Data.ApiSecret,
 		queryParams,
 	)
 	req, err := http.NewRequest(

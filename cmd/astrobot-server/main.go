@@ -8,9 +8,10 @@ import (
 	"github.com/go-openapi/loads"
 	"github.com/jessevdk/go-flags"
 
-	config "github.com/NFortun/Astrobot/config"
-	restapi "github.com/NFortun/Astrobot/restapi"
+	"github.com/NFortun/Astrobot/internal/astrobin"
 	"github.com/NFortun/Astrobot/restapi/operations"
+
+	restapi "github.com/NFortun/Astrobot/restapi"
 )
 
 var port = flag.Int("port", 3000, "default server port")
@@ -18,7 +19,7 @@ var port = flag.Int("port", 3000, "default server port")
 func main() {
 
 	flag.Parse()
-	config.LoadConfig()
+	astrobin.LoadConfig()
 
 	swaggerSpec, err := loads.Embedded(restapi.SwaggerJSON, restapi.FlatSwaggerJSON)
 	if err != nil {

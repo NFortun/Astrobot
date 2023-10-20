@@ -9,7 +9,7 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 
-	"github.com/NFortun/Astrobot/handler"
+	"github.com/NFortun/Astrobot/astrobin"
 	"github.com/NFortun/Astrobot/restapi/operations"
 )
 
@@ -37,8 +37,8 @@ func configureAPI(api *operations.AstrobotAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	api.GetImageOfTheDayHandler = operations.GetImageOfTheDayHandlerFunc(handler.GetImageOfTheDay)
-	api.GetImagesHandler = operations.GetImagesHandlerFunc(handler.GetImages)
+	api.GetImageOfTheDayHandler = operations.GetImageOfTheDayHandlerFunc(astrobin.GetImageOfTheDay)
+	api.GetImagesHandler = operations.GetImagesHandlerFunc(astrobin.GetImages)
 
 	api.PreServerShutdown = func() {}
 
