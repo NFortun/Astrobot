@@ -38,7 +38,7 @@ func NewAstrobotAPI(spec *loads.Document) *AstrobotAPI {
 		APIKeyAuthenticator: security.APIKeyAuth,
 		BearerAuthenticator: security.BearerAuth,
 
-		JSONConsumer: runtime.JSONConsumer(),
+		MultipartformConsumer: runtime.DiscardConsumer,
 
 		JSONProducer: runtime.JSONProducer(),
 
@@ -47,6 +47,9 @@ func NewAstrobotAPI(spec *loads.Document) *AstrobotAPI {
 		}),
 		GetImagesHandler: GetImagesHandlerFunc(func(params GetImagesParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetImages has not yet been implemented")
+		}),
+		UploadImageHandler: UploadImageHandlerFunc(func(params UploadImageParams) middleware.Responder {
+			return middleware.NotImplemented("operation UploadImage has not yet been implemented")
 		}),
 	}
 }
@@ -76,9 +79,9 @@ type AstrobotAPI struct {
 	// It has a default implementation in the security package, however you can replace it for your particular usage.
 	BearerAuthenticator func(string, security.ScopedTokenAuthentication) runtime.Authenticator
 
-	// JSONConsumer registers a consumer for the following mime types:
-	//   - application/json
-	JSONConsumer runtime.Consumer
+	// MultipartformConsumer registers a consumer for the following mime types:
+	//   - multipart/form-data
+	MultipartformConsumer runtime.Consumer
 
 	// JSONProducer registers a producer for the following mime types:
 	//   - application/json
@@ -88,6 +91,8 @@ type AstrobotAPI struct {
 	GetImageOfTheDayHandler GetImageOfTheDayHandler
 	// GetImagesHandler sets the operation handler for the get images operation
 	GetImagesHandler GetImagesHandler
+	// UploadImageHandler sets the operation handler for the upload image operation
+	UploadImageHandler UploadImageHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -157,8 +162,8 @@ func (o *AstrobotAPI) RegisterFormat(name string, format strfmt.Format, validato
 func (o *AstrobotAPI) Validate() error {
 	var unregistered []string
 
-	if o.JSONConsumer == nil {
-		unregistered = append(unregistered, "JSONConsumer")
+	if o.MultipartformConsumer == nil {
+		unregistered = append(unregistered, "MultipartformConsumer")
 	}
 
 	if o.JSONProducer == nil {
@@ -170,6 +175,9 @@ func (o *AstrobotAPI) Validate() error {
 	}
 	if o.GetImagesHandler == nil {
 		unregistered = append(unregistered, "GetImagesHandler")
+	}
+	if o.UploadImageHandler == nil {
+		unregistered = append(unregistered, "UploadImageHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -200,8 +208,8 @@ func (o *AstrobotAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consu
 	result := make(map[string]runtime.Consumer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
-		case "application/json":
-			result["application/json"] = o.JSONConsumer
+		case "multipart/form-data":
+			result["multipart/form-data"] = o.MultipartformConsumer
 		}
 
 		if c, ok := o.customConsumers[mt]; ok {
@@ -267,6 +275,10 @@ func (o *AstrobotAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/images"] = NewGetImages(o.context, o.GetImagesHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/upload"] = NewUploadImage(o.context, o.UploadImageHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

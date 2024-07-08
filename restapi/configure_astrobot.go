@@ -33,12 +33,11 @@ func configureAPI(api *operations.AstrobotAPI) http.Handler {
 	// To continue using redoc as your UI, uncomment the following line
 	// api.UseRedoc()
 
-	api.JSONConsumer = runtime.JSONConsumer()
-
 	api.JSONProducer = runtime.JSONProducer()
 
 	api.GetImageOfTheDayHandler = operations.GetImageOfTheDayHandlerFunc(astrobin.GetImageOfTheDay)
 	api.GetImagesHandler = operations.GetImagesHandlerFunc(astrobin.GetImages)
+	api.UploadImageHandler = operations.UploadImageHandlerFunc(astrobin.UploadFile)
 
 	api.PreServerShutdown = func() {}
 

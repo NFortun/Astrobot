@@ -77,3 +77,30 @@ paths:
           description: "default error message"
           schema:
             $ref: "#/definitions/Error"
+  /upload:
+    post:
+      operationId: UploadImage
+      summary: Upload images to providers
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: upFile
+          in: formData
+          type: file
+          description: file to upload
+          required: true
+        - name: caption
+          in: formData
+          type: string
+        - name: name
+          in: formData
+          type: string
+          description: name of the file
+          required: true
+      responses:
+        "204":
+          description: "Success"
+        default:
+          description: "default error message"
+          schema:
+            $ref: "#/definitions/Error"
