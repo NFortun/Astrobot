@@ -19,7 +19,7 @@ var Data Config
 func LoadConfig() {
 	file, err := os.Open(os.Getenv("CONFIG_PATH"))
 	if err != nil {
-		panic(err)
+		log.Fatalf("fail to open configuration file at $CONFIG_PATH: %v", err)
 	}
 
 	fileContent, err := io.ReadAll(file)

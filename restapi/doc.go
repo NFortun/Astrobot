@@ -9,7 +9,7 @@
 //	Version: 0.0.1
 //
 //	Consumes:
-//	  - application/json
+//	  - multipart/form-data
 //
 //	Produces:
 //	  - application/json

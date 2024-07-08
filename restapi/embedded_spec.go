@@ -92,6 +92,47 @@ func init() {
           }
         }
       }
+    },
+    "/upload": {
+      "post": {
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "summary": "Upload images to providers",
+        "operationId": "UploadImage",
+        "parameters": [
+          {
+            "type": "file",
+            "description": "file to upload",
+            "name": "upFile",
+            "in": "formData",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "caption",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "name of the file",
+            "name": "name",
+            "in": "formData",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "default error message",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -203,6 +244,47 @@ func init() {
             "schema": {
               "$ref": "#/definitions/ImagesResponse"
             }
+          },
+          "default": {
+            "description": "default error message",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/upload": {
+      "post": {
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "summary": "Upload images to providers",
+        "operationId": "UploadImage",
+        "parameters": [
+          {
+            "type": "file",
+            "description": "file to upload",
+            "name": "upFile",
+            "in": "formData",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "caption",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "name of the file",
+            "name": "name",
+            "in": "formData",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
           },
           "default": {
             "description": "default error message",

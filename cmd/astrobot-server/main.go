@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 	"log"
-	"os"
+	"net/http"
 
+	"github.com/flowchartsman/swaggerui"
 	"github.com/go-openapi/loads"
-	"github.com/jessevdk/go-flags"
 
 	"github.com/NFortun/Astrobot/internal/astrobin"
 	"github.com/NFortun/Astrobot/restapi/operations"
@@ -14,7 +14,7 @@ import (
 	restapi "github.com/NFortun/Astrobot/restapi"
 )
 
-var port = flag.Int("port", 3000, "default server port")
+var port = flag.Int("port", 8080, "default server port")
 
 func main() {
 
@@ -31,26 +31,15 @@ func main() {
 	server.Port = *port
 	defer server.Shutdown()
 
-	parser := flags.NewParser(server, flags.Default)
-	parser.ShortDescription = "Astrobot"
-	parser.LongDescription = swaggerSpec.Spec().Info.Description
-	server.ConfigureFlags()
-	for _, optsGroup := range api.CommandLineOptionsGroups {
-		_, err := parser.AddGroup(optsGroup.ShortDescription, optsGroup.LongDescription, optsGroup.Options)
+	go func() {
+		d, err := swaggerSpec.Raw().MarshalJSON()
 		if err != nil {
-			log.Fatalln(err)
+			panic(err)
 		}
-	}
-
-	if _, err := parser.Parse(); err != nil {
-		code := 1
-		if fe, ok := err.(*flags.Error); ok {
-			if fe.Type == flags.ErrHelp {
-				code = 0
-			}
-		}
-		os.Exit(code)
-	}
+		http.Handle("/swagger/", http.StripPrefix("/swagger", swaggerui.Handler(d)))
+		log.Println("serving on :8081")
+		log.Fatal(http.ListenAndServe(":8081", nil))
+	}()
 
 	server.ConfigureAPI()
 
