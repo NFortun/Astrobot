@@ -23,7 +23,7 @@ func (i *Instagram) Connect(ctx context.Context) error {
 	return nil
 }
 
-func (i *Instagram) Upload(ctx context.Context, file io.ReadCloser, name, caption string) error {
+func (i *Instagram) Upload(ctx context.Context, file io.Reader, name, caption string) error {
 	_, err := i.insta.Upload(
 		&goinsta.UploadOptions{
 			File:                 file,

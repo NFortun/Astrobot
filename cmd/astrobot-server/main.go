@@ -14,7 +14,9 @@ import (
 	restapi "github.com/NFortun/Astrobot/restapi"
 )
 
-var port = flag.Int("port", 8080, "default server port")
+var (
+	port = flag.Int("port", 8080, "default server port")
+)
 
 func main() {
 

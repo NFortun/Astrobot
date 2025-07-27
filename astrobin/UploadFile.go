@@ -20,9 +20,11 @@ func UploadFile(params api.UploadImageParams) middleware.Responder {
 	}
 
 	ctx := context.Background()
-	file := params.UpFile
-	uploaders := []uploader.Uploader{&uploader.Drive{}, &uploader.Instagram{}}
+	fmt.Printf("content type: %s\n", params.HTTPRequest.Header.Get("Content-Type"))
+
+	uploaders := []uploader.Uploader{&uploader.Instagram{}}
 	for _, uploader := range uploaders {
+		file := params.UpFile
 		if err := uploader.Connect(ctx); err != nil {
 			msg := fmt.Sprintf("fail to connect: %s", err.Error())
 			return api.NewUploadImageDefault(http.StatusInternalServerError).WithPayload(&models.Error{Message: &msg})
