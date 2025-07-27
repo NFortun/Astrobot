@@ -7,5 +7,5 @@ import (
 
 type Uploader interface {
 	Connect(ctx context.Context) error
-	Upload(ctx context.Context, content io.ReadCloser, name, caption string) error
+	Upload(ctx context.Context, content io.Reader, name, caption string) error
 }

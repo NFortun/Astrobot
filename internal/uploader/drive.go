@@ -47,7 +47,7 @@ func (d *Drive) Connect(ctx context.Context) error {
 	return nil
 }
 
-func (d *Drive) Upload(ctx context.Context, file io.ReadCloser, name, caption string) error {
+func (d *Drive) Upload(ctx context.Context, file io.Reader, name, caption string) error {
 	_, err := d.srv.Files.Create(&drive.File{
 		Description:     caption,
 		Name:            name,
