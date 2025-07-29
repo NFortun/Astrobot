@@ -22,7 +22,7 @@ func UploadFile(params api.UploadImageParams) middleware.Responder {
 	ctx := context.Background()
 	fmt.Printf("content type: %s\n", params.HTTPRequest.Header.Get("Content-Type"))
 
-	uploaders := []uploader.Uploader{&uploader.Instagram{}}
+	uploaders := []uploader.Uploader{&uploader.Drive{}, &uploader.Instagram{}}
 	for _, uploader := range uploaders {
 		file := params.UpFile
 		if err := uploader.Connect(ctx); err != nil {
